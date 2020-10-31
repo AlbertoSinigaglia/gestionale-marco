@@ -59,7 +59,7 @@
                             <button type="submit" class="btn btn-primary w-100 mt-3">Inserisci</button>
                         </form>
                         <p class="d-block w-100 h4 pt-5 font-weight-bold">Tutti i lavori:</p>
-                        <div class="w-100" style="overflow:scroll">
+                        <div class="w-100" style="overflow-x:scroll">
                             <table class="table table-hover table-bordered thead-dark table-striped" style="white-space: nowrap;">
                                 <thead>
                                 <tr>
