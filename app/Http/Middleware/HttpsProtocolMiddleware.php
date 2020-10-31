@@ -8,7 +8,7 @@ class HttpsProtocolMiddleware
 {
     public function handle($request, Closure $next)
     {
-        $request->setTrustedProxies( [ $request->getClientIp() ] );
+        Request::setTrustedProxies([$request->getClientIp()],Request::HEADER_X_FORWARDED_ALL);
         if (!$request->secure() && app()->environment('production')) {
             return redirect()->secure($request->getRequestUri());
         }
