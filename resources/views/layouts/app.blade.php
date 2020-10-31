@@ -28,6 +28,11 @@
              list-style: none;
          }
     </style>
+    <script>
+        if (location.protocol !== 'https:') {
+            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        }
+    </script>
 </head>
 <body>
     <div id="app">
