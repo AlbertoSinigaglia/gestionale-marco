@@ -25,10 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if (env('APP_ENV') === 'production') {
-            $request = Request::createFromGlobals();
-
-            Request::setTrustedProxies([$request->server->get('REMOTE_ADDR')], Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+            //\Illuminate\Support\Facades\URL::forceScheme('https');
         }
     }
 }
