@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row m-0 p-3">
-                            <h3 class="pb-3 border-bottom w-100 font-weight-bold">Totale per {{$client->name}}: <span class="font-weight-normal">€{{number_format($total ?? 0, 2, '.', ',')}}</span></h3>
+                            <h3 class="pb-3 border-bottom w-100 font-weight-bold">Totale per {{$client->name}}: <span class="font-weight-normal">€{{$client->amount}}</span></h3>
                             <p class="d-block w-100 h4 pt-5 font-weight-bold">Inserisci nuovo lavoro</p>
                             <form class="w-100 pb-3 border-bottom" action="{{route('work.create', ['client' => $client->id])}}" method="POST">
                                 @if ($errors->any())

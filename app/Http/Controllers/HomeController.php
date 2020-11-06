@@ -38,7 +38,7 @@ from clients left join (
 group by clients.id
 */
 
-        $all = Client::query()->leftJoinSub(function(Builder $sub){
+        /*$all = Client::query()->leftJoinSub(function(Builder $sub){
             $sub->selectRaw("
  clients.id, FORMAT(COALESCE(SUM(works.cost), 0),2) amount
 from clients left join (
@@ -51,7 +51,8 @@ group by clients.id
             ");
         }, 'c1', function ($join) {
             $join->on('clients.id', '=', 'c1.id');
-        })->orderBy('name')->get();
+        })->orderBy('name')->get();*/
+        $all = Client::orderBy('name')->get();
         return view('home')
             ->with('clients', $all);
     }

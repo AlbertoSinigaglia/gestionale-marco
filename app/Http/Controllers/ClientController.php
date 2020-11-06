@@ -20,17 +20,9 @@ class ClientController extends Controller
     }
     public function works(Client $client){
         $all = $client->works()->orderBy('paid', 'asc')->orderBy('day', 'desc')->get();
-        $total = $all->reduce(function($tot, $el) use ($client){
-            if($el->paid) return $tot;
-            $partial = $el->number_of_workers * $client->worker_cost_hourly;
-            if($el->machines)
-                $partial += $client->machine_cost_hourly;
-            return $tot + $el->begin_at->floatDiffInRealHours($el->finish_at) * $partial;
-        }, 0);
         return view('works')
             ->with('works', $all)
-            ->with('client', $client)
-            ->with('total', $total);
+            ->with('client', $client);
     }
 
 
