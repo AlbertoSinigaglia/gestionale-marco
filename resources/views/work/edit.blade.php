@@ -22,21 +22,21 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="date">Data del lavoro:</label>
-                                        <input type="date" class="form-control" id="date" name="day" placeholder="Inserisci data del lavoro" value="{{old('day') ?? $work->day->format('Y-m-d') ?? today('Europe/Rome')->format('Y-m-d')}}">
+                                        <input type="date" required class="form-control" id="date" name="day" placeholder="Inserisci data del lavoro" value="{{old('day') ?? $work->day->format('Y-m-d') ?? today('Europe/Rome')->format('Y-m-d')}}">
                                     </div>
                                     <div class="col">
                                         <label for="workers">Numero lavoratori:</label>
-                                        <input type="number" step="1" min="1" class="form-control" name="number_of_workers" id="workers" placeholder="Inserisci numero di lavoratori" value="{{old('number_of_workers') ?? $work->number_of_workers ?? 1}}">
+                                        <input type="number" required step="1" min="1" class="form-control" name="number_of_workers" id="workers" placeholder="Inserisci numero di lavoratori" value="{{old('number_of_workers') ?? $work->number_of_workers ?? 1}}">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
                                         <label for="begin-time">Ora di inizio:</label>
-                                        <input type="time" class="form-control" name="begin_at" value="{{old('begin_at') ?? $work->begin_at->format('H:i')}}" id="begin-time" placeholder="Inserisci l'ora di inizio">
+                                        <input type="time" required class="form-control" name="begin_at" value="{{old('begin_at') ?? $work->begin_at->format('H:i')}}" id="begin-time" placeholder="Inserisci l'ora di inizio">
                                     </div>
                                     <div class="col">
                                         <label for="finish-time">Ora di fine:</label>
-                                        <input type="time" class="form-control" name="finish_at" value="{{old('finish_at') ?? $work->finish_at->format('H:i')}}" id="finish-time" placeholder="Inserisci l'ora di fine">
+                                        <input type="time" required class="form-control" name="finish_at" value="{{old('finish_at') ?? $work->finish_at->format('H:i')}}" id="finish-time" placeholder="Inserisci l'ora di fine">
                                     </div>
                                 </div>
                                 <div class="row mt-2">

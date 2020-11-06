@@ -7,9 +7,69 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row m-0 p-3">
-                        <h3 class="pb-3 border-bottom w-100 font-weight-bold">Totale corrente: <span class="font-weight-normal">€{{number_format($total ?? 0, 2, '.', ',')}}</span></h3>
-                        <p class="d-block w-100 h4 pt-5 font-weight-bold">Inserisci nuovo lavoro</p>
-                        <form class="w-100 pb-3 border-bottom" action="{{route('work.create')}}" method="POST">
+                        <h3 class="pb-3 border-bottom w-100 font-weight-bold">Lista clienti</h3>
+
+
+
+
+                        <p class="d-block w-100 h4 pt-5 font-weight-bold border-bottom pb-2">I tuoi clienti:</p>
+                        <div class="row m-0 p-0 w-100">
+                            @forelse($clients as $client)
+                            <div class="col-12 m-0 p-0">
+                                <div class="row m-0 p-0 border-bottom">
+                                    <div class="col-11 pt-2 mb-2 pl-0 ml-0 pl-md-2" style="min-height: 90px">
+                                        <h4 class="font-weight-bold"><a href="{{route('client', ['client' => $client->id])}}">{{$client->name}}</a> (Tot: €{{$client->amount}})</h4>
+                                        @if(filled($client->address))<h6>Indirizzo: {{$client->address}}</h6>@endif
+                                        @if(filled($client->piva))<h6>P. IVA: {{$client->piva}}</h6>@endif
+                                        @if(filled($client->phone))<h6>N. di tel: <a href="callto:{{$client->phone}}">{{$client->phone}}</a></h6>@endif
+                                        @if(filled($client->email))<h6>Email: <a href="mailto:{{$client->email}}">{{$client->email}}</a></h6>@endif
+                                    </div>
+                                    <div class="col-1 d-flex justify-content-center p-0 align-items-center flex-column pt-2 pb-2">
+                                        <div class="p-1">
+                                            <button class="btn btn-success" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Modifica lavoro">
+                                                <a href="{{route('client', ['client' => $client->id])}}" style="color:white">
+                                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                                        <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                                                    </svg>
+                                                </a>
+                                            </button>
+                                        </div>
+                                        <div class="p-1">
+                                            <button class="btn btn-primary" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Modifica lavoro">
+                                                <a href="{{route('client.edit', ['client' => $client->id])}}" style="color:white">
+                                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                                    </svg>
+                                                </a>
+                                            </button>
+                                        </div>
+
+                                        <div class="p-1">
+                                            <button class="btn btn-danger" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Elimina">
+                                                <a href="{{route('client.delete', ['client'=>$client->id])}}" style="color:white" onclick="return confirm('Sicuro di voler eliminare questo cliente?');">
+                                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                                                    </svg>
+                                                </a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @empty
+                                <div class="col-12 border-top pt-2 mb-2">
+                                    <h4 class="text-center">Nessun cliente inserito</h4>
+                                </div>
+                            @endforelse
+                        </div>
+
+
+
+
+
+                        <p class="d-block w-100 h4 pt-5 font-weight-bold">Inserisci nuovo cliente</p>
+                        <form class="w-100 pb-3 border-bottom" action="{{route('client.create')}}" method="POST">
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -20,121 +80,44 @@
                                 </div>
                             @endif
                             @csrf
-                            <div class="row">
+                            <div class="row pt-2">
                                 <div class="col-md-6 col-sm-12">
-                                    <label for="date">Data del lavoro:</label>
-                                    <input type="date" class="form-control" id="date" name="day" placeholder="Inserisci data del lavoro" value="{{old('day') ?? today('Europe/Rome')->format('Y-m-d')}}">
+                                    <label for="name">Nome:</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Inserisci nome del cliente" value="{{old('name')}}" required>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
-                                    <label for="workers">Numero lavoratori:</label>
-                                    <input type="number" step="1" min="1" class="form-control" name="number_of_workers" id="workers" placeholder="Inserisci numero di lavoratori" value="{{old('number_of_workers') ?? 1}}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12">
-                                    <label for="begin-time">Ora di inizio:</label>
-                                    <input type="time" class="form-control" name="begin_at" value="{{old('begin_at')}}" id="begin-time" placeholder="Inserisci l'ora di inizio">
-                                </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <label for="finish-time">Ora di fine:</label>
-                                    <input type="time" class="form-control" name="finish_at" value="{{old('finish_at')}}" id="finish-time" placeholder="Inserisci l'ora di fine">
+                                    <label for="piva">Partita IVA (opzionale):</label>
+                                    <input type="text" class="form-control" name="piva" id="piva" placeholder="Inserisci La partita IVA" value="{{old('piva')}}" >
                                 </div>
                             </div>
-                            <div class="row mt-2">
-                                <div class="col-12">
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="machines" name="machines" {{old('machines') ? 'checked' : ''}}>
-                                        <label class="form-check-label" for="machines">
-                                            Usato macchine
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="paid" name="paid" {{old('paid') ? 'checked' : ''}}>
-                                        <label class="form-check-label" for="paid">
-                                            Già pagato
-                                        </label>
-                                    </div>
+                            <div class="row pt-2">
+                                <div class="col-md-6 col-sm-12">
+                                    <label for="worker_cost_hourly">Costo orario operaio:</label>
+                                    <input required type="number" min="0" step="0.01" class="form-control" name="worker_cost_hourly" value="{{old('worker_cost_hourly') ?? '8.00'}}" id="worker_cost_hourly" placeholder="Inserisci il costo orario dell'operaio">
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <label for="machine_cost_hourly">Costo orario macchine:</label>
+                                    <input required type="number" min="0" step="0.01" class="form-control" name="machine_cost_hourly" value="{{old('machine_cost_hourly') ?? '5.00'}}" id="machine_cost_hourly" placeholder="Inserisci il costo orario per l'uso di macchine">
+                                </div>
+                            </div>
+                            <div class="row pt-2">
+                                <div class="col-md-6 col-sm-12">
+                                    <label for="phone">Telefono (opzionale):</label>
+                                    <input type="text" class="form-control" name="phone" value="{{old('phone')}}" id="phone" placeholder="Inserisci il numero di telefono">
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <label for="email">Email (opzionale):</label>
+                                    <input type="email" class="form-control" name="email" value="{{old('email')}}" id="email" placeholder="Inserisci l'email del cliente">
+                                </div>
+                            </div>
+                            <div class="row pt-2">
+                                <div class="col-md-12 col-sm-12">
+                                    <label for="address">Indirizzo (opzionale):</label>
+                                    <input type="text" class="form-control" name="address" value="{{old('address')}}" id="address" placeholder="Inserisci l'indirizzo del cliente">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 mt-3">Inserisci</button>
                         </form>
-                        <p class="d-block w-100 h4 pt-5 font-weight-bold">Tutti i lavori:</p>
-                        <div class="w-100" style="overflow-x:scroll">
-                            <table class="table table-hover table-bordered thead-dark table-striped" style="white-space: nowrap;">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Data</th>
-                                    <th scope="col">Pagato</th>
-                                    <th>Tot. ore</th>
-                                    <th scope="col">Macchine</th>
-                                    <th scope="col">N. lavoratori</th>
-                                    <th scope="col">Azioni</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @forelse($works ?? [] as $work)
-                                    <tr>
-                                        <td>
-                                            {{$work->day->format('d/m/Y')}}<br>
-                                            {{$work->begin_at->format('H:i')}} - {{$work->finish_at->format('H:i')}}
-                                        </td>
-                                        <td>{{$work->paid ? 'Si' : 'No'}}</td>
-                                        <td>
-                                            {{$work->begin_at->diff($work->finish_at)->format('%H:%I')}}
-                                        </td>
-                                        <td>{{$work->machines ? 'Si' : 'No'}}</td>
-                                        <td>{{$work->number_of_workers}}</td>
-                                        <td class="align-middle">
-                                            <div class="d-flex justify-content-center p-0">
-                                                <div class="p-1">
-                                                    <button class="btn btn-primary" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Modifica lavoro">
-                                                        <a href="{{route('work.edit', ['work' => $work->id])}}" style="color:white">
-                                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                                <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-                                                            </svg>
-                                                        </a>
-                                                    </button>
-                                                </div>
-                                                <div class="p-1">
-                                                    @if($work->paid)
-                                                        <button class="btn btn-warning" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Segna come non pagato">
-                                                            <a href="{{route('work.toggle', ['work'=>$work->id])}}" style="color:black">
-                                                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
-                                                                </svg>
-                                                            </a>
-                                                        </button>
-                                                    @else
-                                                        <button class="btn btn-success" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Segna come pagato">
-                                                            <a href="{{route('work.toggle', ['work'=>$work->id])}}" style="color: white">
-                                                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                                                </svg>
-                                                            </a>
-                                                        </button>
-                                                    @endif
-
-                                                </div>
-                                                <div class="p-1">
-                                                    <button class="btn btn-danger" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Elimina">
-                                                        <a href="{{route('work.delete', ['work'=>$work->id])}}" style="color:white" onclick="return confirm('Sicuro di voler eliminare questo lavoro?');">
-                                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                                <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-                                                            </svg>
-                                                        </a>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center font-weight-bold">Nessun lavoro inserito</td>
-                                    </tr>
-                                @endforelse
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>

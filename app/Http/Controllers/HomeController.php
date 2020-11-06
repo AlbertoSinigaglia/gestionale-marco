@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Work;
 use Carbon\Carbon;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,75 +27,35 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $all = Work::orderBy('created_at', 'desc')->get();
-        $total = $all->reduce(function($tot, $el){
-            if($el->paid) return $tot;
-            $partial = $el->number_of_workers * 8;
-            if($el->machines)
-                $partial += 5;
-            return $tot + $el->begin_at->floatDiffInRealHours($el->finish_at) * $partial;
-        }, 0);
+        /*
+SELECT clients.id, COALESCE(SUM(works.cost), 0) amount
+from clients left join (
+    Select works.id, works.client_id, COALESCE(TIMESTAMPDIFF(MINUTE,works.begin_at,works.finish_at), 0) / 60 * (clients.worker_cost_hourly * works.number_of_workers + works.machines * 			clients.machine_cost_hourly) as cost
+	from works join clients on works.client_id = clients.id
+    where works.paid = 0
+) as works on works.client_id = clients.id
+
+group by clients.id
+*/
+
+        $all = Client::query()->leftJoinSub(function(Builder $sub){
+            $sub->selectRaw("
+ clients.id, FORMAT(COALESCE(SUM(works.cost), 0),2) amount
+from clients left join (
+    Select works.id, works.client_id, COALESCE(TIMESTAMPDIFF(MINUTE,works.begin_at,works.finish_at), 0) / 60 * (clients.worker_cost_hourly * works.number_of_workers + works.machines * 			clients.machine_cost_hourly) as cost
+	from works join clients on works.client_id = clients.id
+    where works.paid = 0
+) as works on works.client_id = clients.id
+
+group by clients.id
+            ");
+        }, 'c1', function ($join) {
+            $join->on('clients.id', '=', 'c1.id');
+        })->orderBy('name')->get();
         return view('home')
-            ->with('works', Work::orderBy('created_at', 'desc')->get())
-            ->with('total', $total);
-    }
-    public function create(Request $request){
-        if(Carbon::parse($request->begin_at)->greaterThan(Carbon::parse($request->finish_at))){
-            return redirect()->back()->withErrors([
-                'date' => "L'ora di inizio non può essere successiva all'ora di fine"
-            ])->withInput($request->all());
-        }
-
-        Work::create($this->normalizeInput($request)->toArray());
-        return redirect()->back();
-    }
-    public function toggle(Work $work){
-        $work->update([
-            'paid' => !$work->paid
-        ]);
-        return redirect()->back();
-    }
-    public function delete(Work $work){
-        $work->forceDelete();
-        return redirect()->back();
-    }
-    public function edit(Work $work){
-        return view('edit')->with('work', $work);
-    }
-    public function update(Work $work, Request $request){
-        if(Carbon::parse($request->begin_at)->greaterThan(Carbon::parse($request->finish_at))){
-            return redirect()->back()->withErrors([
-                'date' => "L'ora di inizio non può essere successiva all'ora di fine"
-            ])->withInput($request->all());
-        }
-
-        $work->update($this->normalizeInput($request)->toArray());
-        return redirect()->route('home');
+            ->with('clients', $all);
     }
 
-    /**
-     * @param Request $request
-     */
-    public function normalizeInput(Request $request): \Illuminate\Support\Collection
-    {
-        $data = collect($request->only([
-            'number_of_workers',
-            'machines',
-            'paid',
-            'begin_at',
-            'finish_at',
-            'day'
-        ]));
-        if ($data->has('machines'))
-            $data->put('machines', 1);
-        else
-            $data->put('machines', 0);
 
 
-        if ($data->has('paid'))
-            $data->put('paid', 1);
-        else
-            $data->put('paid', 0);
-        return $data;
-    }
 }
