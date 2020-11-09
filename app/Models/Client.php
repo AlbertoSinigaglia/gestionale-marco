@@ -14,12 +14,12 @@ class Client extends Model
         return $this->hasMany(Work::class);
     }
     public function getAmountAttribute(){
-        return number_format($this->works->reduce(function($tot, $el){
-            if($el->paid) return $tot;
-            $partial = $el->number_of_workers * $this->worker_cost_hourly;
-            if($el->machines)
+        return number_format($this->works->reduce(function($tot, $work){
+            if($work->paid) return $tot;
+            $partial = $work->number_of_workers * $this->worker_cost_hourly;
+            if($work->machines)
                 $partial += $this->machine_cost_hourly;
-            return $tot + $el->begin_at->floatDiffInRealHours($el->finish_at) * $partial;
+            return $tot + $work->begin_at->floatDiffInRealHours($work->finish_at) * $partial + $work->disposal;
         }, 0), 2, '.', ',');
     }
 }

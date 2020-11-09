@@ -58,7 +58,9 @@ class WorkController extends Controller
             'paid',
             'begin_at',
             'finish_at',
-            'day'
+            'day',
+            'disposal',
+            'description'
         ]));
         if ($data->has('machines'))
             $data->put('machines', 1);

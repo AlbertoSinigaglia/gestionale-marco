@@ -40,6 +40,18 @@
                                         <input required type="time" class="form-control" name="finish_at" value="{{old('finish_at')}}" id="finish-time" placeholder="Inserisci l'ora di fine">
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="disposal">Smaltimento:</label>
+                                        <input type="number" step="0.01" min="0" required class="form-control" name="disposal" value="{{old('disposal') ?? '0'}}" id="disposal" placeholder="Inserisci il costo dello smaltimento">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="description">Descrizione:</label>
+                                        <textarea class="form-control" name="description" id="description" placeholder="Inserisci la descizione">{{old('description')}}</textarea>
+                                    </div>
+                                </div>
                                 <div class="row mt-2">
                                     <div class="col-12">
                                         <div class="form-check mb-2">
@@ -60,14 +72,31 @@
                             </form>
                             <p class="d-block w-100 h4 pt-5 font-weight-bold">Tutti i lavori:</p>
                             <div class="w-100" style="overflow-x:scroll">
+                                <script>
+                                    var ELEMENT;
+                                    function toggleShowDescription(element) {
+                                        ELEMENT = element
+                                        console.log(element)
+                                        if(element.dataset.expanded === "true") {
+                                            element.innerText = element.dataset.text.substr(0, 20) + '...'
+                                            element.dataset.expanded = "false";
+                                        }
+                                        else {
+                                            element.innerText = element.dataset.text
+                                            element.dataset.expanded = "true";
+                                        }
+                                    }
+                                </script>
                                 <table class="table table-hover table-bordered thead-dark table-striped" style="white-space: nowrap;">
                                     <thead>
                                     <tr>
                                         <th scope="col">Data</th>
                                         <th scope="col">Pagato</th>
-                                        <th>Tot. ore</th>
+                                        <th scope="col">Tot. ore</th>
                                         <th scope="col">Macchine</th>
                                         <th scope="col">N. lavoratori</th>
+                                        <th scope="col">Smaltimento</th>
+                                        <th scope="col">Descrizione</th>
                                         <th scope="col">Azioni</th>
                                     </tr>
                                     </thead>
@@ -84,6 +113,12 @@
                                             </td>
                                             <td>{{$work->machines ? 'Si' : 'No'}}</td>
                                             <td>{{$work->number_of_workers}}</td>
+                                            <td>€{{$work->disposal ?? 0}}</td>
+                                            <td>
+                                                <p class="description-text text-break" style="max-width: 150px; white-space: normal;" onclick="toggleShowDescription(this)" data-text="{{$work->description}}" data-expanded="false">
+                                                    {{\Illuminate\Support\Str::limit($work->description, 20)}}
+                                                </p>
+                                            </td>
                                             <td class="align-middle">
                                                 <div class="d-flex justify-content-center p-0">
                                                     <div class="p-1">

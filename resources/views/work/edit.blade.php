@@ -39,6 +39,18 @@
                                         <input type="time" required class="form-control" name="finish_at" value="{{old('finish_at') ?? $work->finish_at->format('H:i')}}" id="finish-time" placeholder="Inserisci l'ora di fine">
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="disposal">Smaltimento:</label>
+                                        <input type="number" step="0.01" min="0" required class="form-control" name="disposal" value="{{old('disposal') ?? $work->disposal ?? '0'}}" id="disposal" placeholder="Inserisci il costo dello smaltimento">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="description">Descrizione:</label>
+                                        <textarea class="form-control" name="description" id="description">{{old('description') ?? $work->description}}</textarea>
+                                    </div>
+                                </div>
                                 <div class="row mt-2">
                                     <div class="col">
                                         <div class="form-check mb-2">

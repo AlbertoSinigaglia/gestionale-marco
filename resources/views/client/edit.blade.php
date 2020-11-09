@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row m-0 p-3">
-                            <p class="d-block w-100 h4 pt-0 font-weight-bold">Modifica lavoro</p>
+                            <p class="d-block w-100 h4 pt-0 font-weight-bold">Modifica cliente</p>
                             <form class="w-100 pb-3 border-bottom" action="{{route('client.update', ['client' => $client->id])}}" method="POST">
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
