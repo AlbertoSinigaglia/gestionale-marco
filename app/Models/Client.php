@@ -22,4 +22,9 @@ class Client extends Model
             return $tot + $work->begin_at->floatDiffInRealHours($work->finish_at) * $partial + $work->disposal;
         }, 0), 2, '.', ',');
     }
+    public function getTotalHoursToPayAttribute(){
+        $this->works->reduce(function($tot, $work){
+            return $work->begin_at->floatDiffInRealHours($work->finish_at);
+        }, 0);
+    }
 }
