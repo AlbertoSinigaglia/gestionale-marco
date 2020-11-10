@@ -167,6 +167,9 @@
                                             <td colspan="7" class="text-center font-weight-bold">Nessun lavoro inserito</td>
                                         </tr>
                                     @endforelse
+                                        <tr>
+                                            <td colspan="8">{{$client->total_hours_to_pay}}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
