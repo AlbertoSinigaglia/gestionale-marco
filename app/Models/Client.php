@@ -23,7 +23,7 @@ class Client extends Model
         }, 0), 2, '.', ',');
     }
     public function getTotalHoursToPayAttribute(){
-        $this->works->reduce(function($tot, $work){
+        return $this->works->reduce(function($tot, $work){
             return $work->begin_at->floatDiffInRealHours($work->finish_at);
         }, 0);
     }
