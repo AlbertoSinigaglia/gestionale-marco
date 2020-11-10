@@ -168,7 +168,7 @@
                                         </tr>
                                     @endforelse
                                         <tr>
-                                            <td colspan="8">Totale ore: <br>{{str_pad((int)$client->total_hours_to_pay}}:{{(int)((($client->total_hours_to_pay - (int)$client->total_hours_to_pay))*60), 2, '0', STR_PAD_LEFT)}}</td>
+                                            <td colspan="8">Totale ore: <br>{{(int)$client->total_hours_to_pay}}:{{str_pad((int)((($client->total_hours_to_pay - (int)$client->total_hours_to_pay))*60), 2, '0', STR_PAD_LEFT)}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
