@@ -24,6 +24,7 @@ class Client extends Model
     }
     public function getTotalHoursToPayAttribute(){
         return $this->works->reduce(function($tot, $work){
+            if($work->paid) return $tot;
             return $tot + $work->begin_at->floatDiffInRealHours($work->finish_at) * $work->number_of_workers;
         }, 0);
     }
